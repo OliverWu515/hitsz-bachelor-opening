@@ -1002,6 +1002,11 @@
 \fi
 %    \end{macrocode}
 %
+% （本科生）是否为论文（默认为 true，即毕业论文）。
+%    \begin{macrocode}
+\DeclareBoolOption[true]{isessay}
+%    \end{macrocode}
+%
 % 目录中英文是否用 Arial 字体（默认关闭）。
 %    \begin{macrocode}
 \DeclareBoolOption[false]{arialtoc}
@@ -2500,7 +2505,11 @@ delim_1 "\\hspace*{\\fill}"
 \def\hitsz@cauthortitle{本科生}
 \fi
 \def\hitsz@bachelor@cxuewei{本科}
-\def\hitsz@bachelor@cthesisname{毕业论文（设计）}
+\ifhitsz@isessay
+\def\hitsz@bachelor@cthesisname{毕业论文}
+\else
+\def\hitsz@bachelor@cthesisname{毕业设计}
+\fi
 \def\hitsz@bachelor@caffiltitle{院（系）}
 %</cfg>
 %    \end{macrocode}
@@ -2600,13 +2609,13 @@ delim_1 "\\hspace*{\\fill}"
 
 本人愿为此声明承担法律责任。}
 \newcommand{\hitsz@authorizationtext@bachelor@shenzhen}{%
-本科毕业论文（设计）是本科生在哈尔滨工业大学攻读学士学位期间完成的成果，知识产权归属哈尔滨工业大学。本科毕业论文（设计）的使用权限如下：
+本科\hitsz@bachelor@cthesisname 是本科生在哈尔滨工业大学攻读学士学位期间完成的成果，知识产权归属哈尔滨工业大学。本科\hitsz@bachelor@cthesisname 的使用权限如下：
 
-（1）学校可以采用影印、缩印或其他复制手段保存本科生上交的毕业论文（设计），并向有关部门报送本科毕业论文（设计）；（2）根据需要，学校可以将本科毕业论文（设计）部分或全部内容编入有关数据库进行检索和提供相应阅览服务；（3）本科生毕业后发表与此毕业论文（设计）研究成果相关的学术论文和其他成果时，应征得导师同意，且第一署名单位为哈尔滨工业大学。
+（1）学校可以采用影印、缩印或其他复制手段保存本科生上交的\hitsz@bachelor@cthesisname，并向有关部门报送本科\hitsz@bachelor@cthesisname；（2）根据需要，学校可以将本科\hitsz@bachelor@cthesisname 部分或全部内容编入有关数据库进行检索和提供相应阅览服务；（3）本科生毕业后发表与此\hitsz@bachelor@cthesisname 研究成果相关的学术论文和其他成果时，应征得导师同意，且第一署名单位为哈尔滨工业大学。
 
 保密论文在保密期内遵守有关保密规定，解密后适用于此使用权限规定。
 
-本人知悉本科毕业论文（设计）的使用权限，并将遵守有关规定。}
+本人知悉本科\hitsz@bachelor@cthesisname 的使用权限，并将遵守有关规定。}
 \newcommand{\hitsz@authorizationtext@bachelor@weihai}{%
 本人郑重声明：在哈尔滨工业大学（威海）攻读学士学位期间，所提交的毕业设计（论文）《\hitsz@ctitle》，是本人在导师指导下独立进行研究工作所取得的成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明，其它未注明部分不包含他人已发表或撰写过的研究成果，不存在购买、由他人代写、剽窃和伪造数据等作假行为。
 
@@ -2615,7 +2624,7 @@ delim_1 "\\hspace*{\\fill}"
 \newcommand{\hitsz@declaretext}{%
 本人郑重声明：此处所提交的学位论文《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学位期间独立进行研究工作所取得的成果，且学位论文中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本学位论文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
 \newcommand{\hitsz@declaretext@bachelor@shenzhen}{%
-本人郑重声明：此处所提交的本科毕业论文（设计）《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学士学位期间独立进行研究工作所取得的成果，且毕业论文（设计）中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本毕业论文（设计）的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
+本人郑重声明：此处所提交的本科\hitsz@bachelor@cthesisname《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学士学位期间独立进行研究工作所取得的成果，且\hitsz@bachelor@cthesisname 中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本\hitsz@bachelor@cthesisname 的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
 \newcommand{\hitsz@datefill}{\hspace{2.5em}年\hspace{1.5em}月\hspace{1.5em}日}
 \newcommand{\hitsz@publication@ctitle}{攻读{\hitsz@cxuewei}学位期间取得创新性成果}
 \newcommand{\hitsz@publication@etitle}{Papers published in the period of Ph.D. education}
