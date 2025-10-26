@@ -979,6 +979,12 @@
   \hitsz@masterfalse
   \hitsz@doctorfalse
   \expandafter\csname hitsz@#1true\endcsname}
+\newif\ifhitsz@proposal
+\newif\ifhitsz@interim
+\hitsz@proposalfalse
+\hitsz@interimfalse
+\define@key{hitsz}{phase}{%
+	\expandafter\csname hitsz@#1true\endcsname}
 %    \end{macrocode}
 %
 % 此处设置校区，没有明确给出哈尔滨或者威海校区的时候，默认为深圳校区。
@@ -1002,11 +1008,10 @@
 \fi
 %    \end{macrocode}
 %
-% （本科生）是否为论文（默认为 true，即毕业论文）。
+% （本科生）是否为论文（默认为true，即毕业论文）。
 %    \begin{macrocode}
 \DeclareBoolOption[true]{isessay}
 %    \end{macrocode}
-%
 % 目录中英文是否用 Arial 字体（默认关闭）。
 %    \begin{macrocode}
 \DeclareBoolOption[false]{arialtoc}
@@ -1728,8 +1733,18 @@ delim_1 "\\hspace*{\\fill}"
         \hitsz@cschoolname\hitsz@bachelor@cxuewei\hitsz@bachelor@cthesisname}%
     \fi
     \ifhitsz@shenzhen
+      \ifhitsz@interim
       \fancyhead[C]{\songti\xiaowu[0]%
-        \hitsz@cschoolname\hitsz@bachelor@cxuewei\hitsz@bachelor@cthesisname}%
+          \hitsz@cschoolname\hitsz@shenzhencampus\hitsz@bachelor@cthesisname\hitsz@bachelor@creportname}%
+      \else
+          \ifhitsz@proposal
+          \fancyhead[C]{\songti\xiaowu[0]%
+              \hitsz@cschoolname\hitsz@shenzhencampus\hitsz@bachelor@cthesisname\hitsz@bachelor@creportname}%
+          \else
+          \fancyhead[C]{\songti\xiaowu[0]%
+              \hitsz@cschoolname\hitsz@bachelor@cxuewei\hitsz@bachelor@cthesisname}%
+          \fi
+      \fi 
     \fi
     \ifhitsz@weihai
       \fancyhead[C]{\songti\xiaowu[0]%
@@ -2086,17 +2101,45 @@ delim_1 "\\hspace*{\\fill}"
 %
 %    \begin{macrocode}
 %<*cfg>
-\ctexset{%
-  chapter/name={第,章},
-  appendixname=附录,
-  contentsname={目\hspace{\ccwd}录},
-  listfigurename=插图索引,
-  listtablename=表格索引,
-  figurename=图,
-  tablename=表,
-  bibname=参考文献,
-  indexname=索引,
-}
+\ifhitsz@proposal
+    \ctexset{%
+    	chapter/name={,},
+    	appendixname=附录,
+    	contentsname={目\hspace{\ccwd}录},
+    	listfigurename=插图索引,
+    	listtablename=表格索引,
+    	figurename=图,
+    	tablename=表,
+    	bibname=参考文献,
+    	indexname=索引,
+    }
+\else
+    \ifhitsz@interim
+        \ctexset{%
+          chapter/name={,},
+          appendixname=附录,
+          contentsname={目\hspace{\ccwd}录},
+          listfigurename=插图索引,
+          listtablename=表格索引,
+          figurename=图,
+          tablename=表,
+          bibname=参考文献,
+          indexname=索引,
+        }
+    \else
+        \ctexset{%
+            chapter/name={第,章},
+            appendixname=附录,
+            contentsname={目\hspace{\ccwd}录},
+            listfigurename=插图索引,
+            listtablename=表格索引,
+            figurename=图,
+            tablename=表,
+            bibname=参考文献,
+            indexname=索引,
+        }
+    \fi
+\fi
 \newcommand\listfigureename{Index of figure}
 \newcommand\listtableename{Index of table}
 \newcommand\listequationename{Index of equation}
@@ -2504,6 +2547,14 @@ delim_1 "\\hspace*{\\fill}"
 \gdef\hitsz@cxuewei{学士}
 \def\hitsz@cauthortitle{本科生}
 \fi
+\ifhitsz@proposal
+\gdef\hitsz@cxuewei{学士}
+\def\hitsz@cauthortitle{姓名}
+\fi
+\ifhitsz@interim
+\gdef\hitsz@cxuewei{学士}
+\def\hitsz@cauthortitle{姓名}
+\fi
 \def\hitsz@bachelor@cxuewei{本科}
 \ifhitsz@isessay
 \def\hitsz@bachelor@cthesisname{毕业论文}
@@ -2511,6 +2562,8 @@ delim_1 "\\hspace*{\\fill}"
 \def\hitsz@bachelor@cthesisname{毕业设计}
 \fi
 \def\hitsz@bachelor@caffiltitle{院（系）}
+\ifhitsz@interim\def\hitsz@bachelor@creportname{中期报告}\fi
+\ifhitsz@proposal\def\hitsz@bachelor@creportname{开题报告}\fi
 %</cfg>
 %    \end{macrocode}
 %
@@ -2541,7 +2594,15 @@ delim_1 "\\hspace*{\\fill}"
 \def\hitsz@shenzhencampus{深圳校区}
 \def\hitsz@weihaicampus{（威海）}
 \def\hitsz@cschoolnametitle{授予学位单位}
-\def\hitsz@cdatetitle{答辩日期}
+\ifhitsz@proposal
+    \def\hitsz@cdatetitle{日期}
+\else
+    \ifhitsz@interim
+        \def\hitsz@cdatetitle{日期}
+    \else
+        \def\hitsz@cdatetitle{答辩日期}
+    \fi
+\fi
 \def\hitsz@caffiltitle{所在单位}
 \def\hitsz@csubjecttitle{学科}
 \def\hitsz@cdegreetitle{申请学位}
@@ -2609,22 +2670,22 @@ delim_1 "\\hspace*{\\fill}"
 
 本人愿为此声明承担法律责任。}
 \newcommand{\hitsz@authorizationtext@bachelor@shenzhen}{%
-本科\hitsz@bachelor@cthesisname 是本科生在哈尔滨工业大学攻读学士学位期间完成的成果，知识产权归属哈尔滨工业大学。本科\hitsz@bachelor@cthesisname 的使用权限如下：
-
-（1）学校可以采用影印、缩印或其他复制手段保存本科生上交的\hitsz@bachelor@cthesisname，并向有关部门报送本科\hitsz@bachelor@cthesisname；（2）根据需要，学校可以将本科\hitsz@bachelor@cthesisname 部分或全部内容编入有关数据库进行检索和提供相应阅览服务；（3）本科生毕业后发表与此\hitsz@bachelor@cthesisname 研究成果相关的学术论文和其他成果时，应征得导师同意，且第一署名单位为哈尔滨工业大学。
-
-保密论文在保密期内遵守有关保密规定，解密后适用于此使用权限规定。
-
-本人知悉本科\hitsz@bachelor@cthesisname 的使用权限，并将遵守有关规定。}
+    本科\hitsz@bachelor@cthesisname 是本科生在哈尔滨工业大学攻读学士学位期间完成的成果，知识产权归属哈尔滨工业大学。本科\hitsz@bachelor@cthesisname 的使用权限如下：
+    
+    （1）学校可以采用影印、缩印或其他复制手段保存本科生上交的\hitsz@bachelor@cthesisname，并向有关部门报送本科\hitsz@bachelor@cthesisname；（2）根据需要，学校可以将本科\hitsz@bachelor@cthesisname 部分或全部内容编入有关数据库进行检索和提供相应阅览服务；（3）本科生毕业后发表与此\hitsz@bachelor@cthesisname 研究成果相关的学术论文和其他成果时，应征得导师同意，且第一署名单位为哈尔滨工业大学。
+    
+    保密论文在保密期内遵守有关保密规定，解密后适用于此使用权限规定。
+    
+    本人知悉本科\hitsz@bachelor@cthesisname 的使用权限，并将遵守有关规定。}
 \newcommand{\hitsz@authorizationtext@bachelor@weihai}{%
-本人郑重声明：在哈尔滨工业大学（威海）攻读学士学位期间，所提交的毕业设计（论文）《\hitsz@ctitle》，是本人在导师指导下独立进行研究工作所取得的成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明，其它未注明部分不包含他人已发表或撰写过的研究成果，不存在购买、由他人代写、剽窃和伪造数据等作假行为。
-
-本人愿为此声明承担法律责任。}
+    本人郑重声明：在哈尔滨工业大学（威海）攻读学士学位期间，所提交的毕业设计（论文）《\hitsz@ctitle》，是本人在导师指导下独立进行研究工作所取得的成果。对本文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明，其它未注明部分不包含他人已发表或撰写过的研究成果，不存在购买、由他人代写、剽窃和伪造数据等作假行为。
+    
+    本人愿为此声明承担法律责任。}
 \newcommand{\hitsz@declarename}{学位论文原创性声明}
 \newcommand{\hitsz@declaretext}{%
-本人郑重声明：此处所提交的学位论文《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学位期间独立进行研究工作所取得的成果，且学位论文中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本学位论文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
+    本人郑重声明：此处所提交的学位论文《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学位期间独立进行研究工作所取得的成果，且学位论文中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本学位论文的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
 \newcommand{\hitsz@declaretext@bachelor@shenzhen}{%
-本人郑重声明：此处所提交的本科\hitsz@bachelor@cthesisname《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学士学位期间独立进行研究工作所取得的成果，且\hitsz@bachelor@cthesisname 中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本\hitsz@bachelor@cthesisname 的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
+    本人郑重声明：此处所提交的本科\hitsz@bachelor@cthesisname《\hitsz@ctitle》，是本人在导师指导下，在哈尔滨工业大学攻读学士学位期间独立进行研究工作所取得的成果，且\hitsz@bachelor@cthesisname 中除已标注引用文献的部分外不包含他人完成或已发表的研究成果。对本\hitsz@bachelor@cthesisname 的研究工作做出重要贡献的个人和集体，均已在文中以明确方式注明。}
 \newcommand{\hitsz@datefill}{\hspace{2.5em}年\hspace{1.5em}月\hspace{1.5em}日}
 \newcommand{\hitsz@publication@ctitle}{攻读{\hitsz@cxuewei}学位期间取得创新性成果}
 \newcommand{\hitsz@publication@etitle}{Papers published in the period of Ph.D. education}
@@ -2648,9 +2709,29 @@ delim_1 "\\hspace*{\\fill}"
   \begin{CJKfilltwosides}[b]{#1}#2\end{CJKfilltwosides}}
 
 \def\hitsz@first@titlepage{%
-  \ifhitsz@bachelor\hitsz@first@titlepage@bachelor\else\hitsz@first@titlepage@other\fi}
+  \ifhitsz@bachelor
+      \ifhitsz@proposal
+        \relax
+      \else
+      \ifhitsz@interim
+        \relax
+      \else
+        \hitsz@first@titlepage@bachelor
+      \fi
+      \fi
+  \else\hitsz@first@titlepage@other\fi}
 \def\hitsz@second@titlepage{%
-  \ifhitsz@bachelor\hitsz@second@titlepage@bachelor\else\hitsz@second@titlepage@other\fi}
+  \ifhitsz@bachelor
+      \ifhitsz@proposal
+        \hitsz@second@titlepage@bachelor@report
+      \else
+      \ifhitsz@interim
+        \hitsz@second@titlepage@bachelor@report
+      \else
+        \hitsz@second@titlepage@bachelor
+      \fi
+      \fi
+  \else\hitsz@second@titlepage@other\fi}
 
 \newcommand{\hitsz@first@titlepage@bachelor}{
   \ifthenelse%
@@ -2733,6 +2814,49 @@ delim_1 "\\hspace*{\\fill}"
     \end{tabular} \renewcommand{\arraystretch}{1}
       \end{center} }
   \end{center}
+}
+%\RequirePackage[normalem]{ulem}
+\newcommand{\hitsz@second@titlepage@bachelor@report}{
+    \setCJKfamilyfont{STXW}{STXinwei}
+    \newcommand{\STXW}{\CJKfamily{STXW}}
+    \begin{center}
+    \parbox[t][1cm][t]{\textwidth}{\begin{center} \end{center} }
+    \parbox[t][2.1cm][t]{\textwidth}{\xiaochu[1]
+        \begin{center}\scalebox{0.9}[1]{\STXW\bfseries\hitsz@cschoolname\hitsz@shenzhencampus}\end{center}
+    }
+    \parbox[t][2cm][t]{\textwidth}{\xiaochu[1]
+        \begin{center}\scalebox{0.9}[1]{\STXW\bfseries\hitsz@bachelor@cthesisname\hitsz@bachelor@creportname}\end{center}
+    }
+    \parbox[t][1.5cm][t]{\textwidth}{\begin{center} \end{center} }
+    \newlength{\oldextrarowheight}
+    \setlength{\oldextrarowheight}{\extrarowheight}
+    \setlength{\extrarowheight}{12bp}
+    \parbox[t][12cm][t]{\textwidth}
+    {\xiaosan
+        \setlength{\hitsz@title@width}{6em}
+        \begin{center} \renewcommand{\arraystretch}{1.5} \renewcommand{\baselinestretch}{2} \songti
+        \begin{tabular}{l@{\hspace{1em}}c}
+        {\heiti\xiaoer \hitsz@put@title{\hitsz@bachelor@cthesistitle}}	&	{\heiti\xiaoer\raggedright \hitsz@ctitleone}\\[-6bp]
+        \cline{2-2}
+        &	{\heiti\xiaoer\raggedright \hitsz@ctitletwo}\\[-6bp]
+        \cline{2-2}
+        \noalign{\vskip 12bp}
+        {\heiti \hitsz@put@title{\hitsz@cauthortitle}}	& \hitsz@cauthor\\[-6bp]
+        \cline{2-2}
+        {\heiti \hitsz@put@title{\hitsz@bachelor@cstudentidtitle}}	& \hitsz@cstudentid\\[-6bp]
+        \cline{2-2}
+        {\heiti \hitsz@put@title{\hitsz@bachelor@caffiltitlesz}}		&	\hitsz@caffil\\[-6bp]
+        \cline{2-2}
+        {\heiti \hitsz@put@title{\hitsz@bachelor@cmajortitle}}	&	\hitsz@csubject\\[-6bp]
+        \cline{2-2}
+        {\heiti \hitsz@put@title{\hitsz@bachelor@csupervisortitle}}	&	\hitsz@csupervisor\\[-6bp]
+        \cline{2-2}
+        {\heiti \hitsz@put@title{\hitsz@cdatetitle}}		&	\hitsz@cdatesecond\\[-6bp]
+        \cline{2-2}
+        \end{tabular} \renewcommand{\arraystretch}{1}
+        \end{center}
+        \setlength{\extrarowheight}{\oldextrarowheight}}
+    \end{center}
 }
 
 \newlength{\hitsz@etitlelength}%
@@ -2945,7 +3069,13 @@ delim_1 "\\hspace*{\\fill}"
     \fi
   \end{titlepage}
   \normalsize
-  \hitsz@makeabstract}
+  \ifhitsz@interim
+  \relax
+  \else
+  \ifhitsz@proposal
+  \relax
+  \else
+  \hitsz@makeabstract\fi\fi}
 %    \end{macrocode}
 %
 %    生成参考文献和关键字。
@@ -3039,7 +3169,15 @@ delim_1 "\\hspace*{\\fill}"
 %
 % 此处临时更改一下对齐方式。\CTeX\ 似乎无法应对双语目录。
 %    \begin{macrocode}
-\setlength\@tempdima{4em}%
+\ifhitsz@proposal
+    \setlength\@tempdima{1em}%
+\else
+    \ifhitsz@interim
+        \setlength\@tempdima{1em}%
+    \else
+        \setlength\@tempdima{4em}%
+    \fi
+\fi
 \patchcmd{\@dottedtocline}{#4}{\csname hitsz@toc@font\endcsname #4}{}{}
 \patchcmd{\@dottedtocline}{\hb@xt@\@pnumwidth}{\hbox}{}{}
 \renewcommand*\l@chapter[2]{%

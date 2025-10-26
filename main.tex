@@ -20,13 +20,15 @@
 %%=============================================
 
 % 设置文档类别为 <hitszthesis>
-\documentclass[type=doctor]{hitszthesis}
+% \documentclass[type=doctor]{hitszthesis}
 % \documentclass[type=master]{hitszthesis}
-% \documentclass[type=bachelor,infoleft=true]{hitszthesis}
+ \documentclass[type=bachelor,infoleft=true,phase=interim,isessay=true]{hitszthesis}
 
 % 模板提供以下选项，各个选项之间不要有空格
-% 新. isessay=true|false
-%   含义：本科毕业论文/设计，默认为 true（毕业论文）
+% 新1. 选择毕业设计或论文
+% isessay=true|false，true 为论文，false 为设计，默认为 true
+% 新2. 选择为开题或中期
+% phase=proposal|interim，默认为结题论文时不需增加此项
 % 1. type=bachelor|master|doctor
 %   含义：本科、硕士、博士学位论文，不设默认值，**必填**
 % 2. covertitletworow=true|false
@@ -89,23 +91,41 @@
 % 开始写正文
 \mainmatter
 
-% 第1章
-\input{body/chapter01}
+% 以下为开题的章节内容
 
-% 第2章
-\input{body/chapter02}
+\input{proposal/chapter01}
 
-% 第3章
-\input{body/chapter03}
+\input{proposal/chapter02}
 
-% 第4章
-\input{body/chapter04}
+\input{proposal/chapter03}
 
-% 第5章
-\input{body/chapter05}
+% 以下为中期的章节内容
 
-% 第6章
-\input{body/chapter06}
+% \input{interim/chapter01}
+
+% \input{interim/chapter02}
+
+% \input{interim/chapter03}
+
+% 以下为原模板的示例内容
+
+%% 第1章
+%\input{guide/chapter01}
+%
+%% 第2章
+%\input{guide/chapter02}
+%
+%% 第3章
+%\input{guide/chapter03}
+%
+%% 第4章
+%\input{guide/chapter04}
+%
+%% 第5章
+%\input{guide/chapter05}
+%
+%% 第6章
+%\input{guide/chapter06}
 
 % 开始写正文之后的部分
 \backmatter
@@ -116,8 +136,8 @@
 % \input{back/conclusion}
 
 % % 参考文献
-% \bibliographystyle{hitszthesis}
-% \bibliography{reference}
+\bibliographystyle{hitszthesis}
+\bibliography{reference}
 
 % % 发表文章
 % \input{back/publications}
@@ -142,42 +162,6 @@
 % \end{appendix}
 
 %%%% \end{本科书序}
-
-
-%%%% \begin{硕博书序} %%%% 这是一个假的环境，硕、博请用这里的内容
-
-% 结论
-\input{back/conclusion}
-
-% 参考文献
-\bibliographystyle{hitszthesis}
-\bibliography{reference}
-
-% 附录
-\begin{appendix}
-  \input{back/appendixA.tex}
-  \input{back/appendixB.tex}
-\end{appendix}
-
-% 发表文章
-\input{back/publications}
-
-% 索引
-% \input{back/ceindex}
-
-% 授权
-\authorization
-
-% 授权页为扫描的PDF文件（scan.pdf），与上面的命令互斥
-% \authorization[scan.pdf]
-
-% 致谢
-\input{back/acknowledgements}
-
-% 个人简介
-\input{back/resume}
-
-%%%% \end{硕博书序}
 
 
 % 结束文档撰写
